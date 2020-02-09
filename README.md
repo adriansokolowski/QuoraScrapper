@@ -4,4 +4,7 @@ Simulating Chromium and puppeteer for get AJAX results.
 
 ```bash
 npm instal
+node scrape.js
 ```
+
+Every question is saved in results.json
