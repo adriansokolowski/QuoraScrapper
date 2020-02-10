@@ -15,13 +15,14 @@ async function asyncForEach(array, callback) {
 
 (async () => {
   // fetch questions
+  console.log("Scraper started...\n Scraping questions...");
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
   //page.on('console', msg => console.log(msg.text()));
   await page.goto(URL);
   const questions = await page.evaluate(script);
   await browser.close();
-
+  
   // apply answers to questions
   asyncForEach(questions, async (num, index) => {
     const browser = await puppeteer.launch();
@@ -32,11 +33,13 @@ async function asyncForEach(array, callback) {
     let answers = await page.evaluate(script3);
     questions[index].answers = answers;
     console.log("Applied answers to " + questions[index].title);
-    await writeFileSync('results.json', JSON.stringify(questions));
     await browser.close();
-  })
+  }).then(function (error) {
+    console.log(questions);
+    writeFileSync('results.json', JSON.stringify(questions));
+  });
 
-  console.log(questions);
+  
 })();
 
  
