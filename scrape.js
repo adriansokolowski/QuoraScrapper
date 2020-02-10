@@ -1,4 +1,5 @@
-const puppeteer = require('puppeteer')
+const puppeteer = require('puppeteer');
+const converter = require('json-2-csv');
 const script = require('./questions');
 const script3 = require('./answers');
 const { writeFileSync } = require("fs");
@@ -15,7 +16,7 @@ async function asyncForEach(array, callback) {
 
 (async () => {
   // fetch questions
-  console.log("Scraper started...\n Scraping questions...");
+  console.log("Scraper started. \n Scraping questions...");
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
   //page.on('console', msg => console.log(msg.text()));
@@ -37,9 +38,15 @@ async function asyncForEach(array, callback) {
   }).then(function (error) {
     console.log(questions);
     writeFileSync('results.json', JSON.stringify(questions));
+    converter.json2csv(questions, json2csvCallback)
   });
 
   
 })();
 
+let json2csvCallback = function (err, csv) {
+  if (err) throw err;
+  console.log(csv);
+  writeFileSync('output.csv', csv);
+};
  
