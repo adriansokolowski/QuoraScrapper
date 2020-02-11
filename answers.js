@@ -3,7 +3,9 @@ module.exports = function() {
         const C_THREAD = '.pagedlist_item:not(.pagedlist_hidden)'; // question DOM element container
         const C_THREAD_TO_REMOVE = '.pagedlist_item:not(.pagedlist_hidden) .TO_REMOVE'; // question DOM element container REMOVE
         //const C_THREAD_DESCRIPTION = '.ui_qtext_truncated_text'; // answer DOM element
-        const C_THREAD_DESCRIPTION = '.ui_qtext_para '; // answer DOM element
+        const C_THREAD_DESCRIPTION = '.ui_qtext_expanded '; // answer DOM element 
+        const C_THREAD_DESCRIPTION2 = '.ui_qtext_truncated'; // 
+
 
 
 
@@ -14,12 +16,27 @@ module.exports = function() {
         function scrapeSingleThread (elThread) {
             try {
                 elDescription = elThread.querySelector(C_THREAD_DESCRIPTION);
-                var answer = elDescription.innerText.trim()
-
-                answers.add({
-                    answer
-                });
+                if (elDescription) {
+                    var answer = elDescription.innerText.trim()
+    
+                    answers.add({
+                        answer
+                        // answer2
+                    });
+                } else {
+                    // page.waitFor(2000);
+                    // page.click('.ui_qtext_more_link');
+                    elDescription = elThread.querySelector(C_THREAD_DESCRIPTION2);
+                    var answer = elDescription.innerText.trim();
+    
+    
+                    answers.add({
+                        answer
+                        // answer2
+                    });
+                }
             } catch (e) {
+
                 console.log("Error capturing individual thread", e);
             }
         }

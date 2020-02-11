@@ -25,13 +25,27 @@ async function asyncForEach(array, callback) {
   await browser.close();
   
   // apply answers to questions
-  asyncForEach(questions, async (num, index) => {
+  module.exports = asyncForEach(questions, async (num, index) => {
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
     await waitFor(50);
     //page.on('console', msg => console.log(msg.text()));
     await page.goto(questions[index].url);
-    let answers = await page.evaluate(script3);
+    // await page.click('.ui_qtext_more_link');
+    //let answers = await page.evaluate(script3);
+    
+    
+    //let answers = await page.evaluate((script3) => { document.querySelector('.ui_qtext_more_link')[1].click(); });
+
+    // let answers = await page.evaluate((script3) => {
+    //   for(let el of [...document.querySelectorAll('.ui_qtext_more_link')]){
+    //     el.click()
+    //   }
+    // })
+
+    
+
+    let answers = await page.evaluate((script3));
     questions[index].answers = answers;
     console.log("Applied answers to " + questions[index].title);
     await browser.close();
@@ -46,7 +60,6 @@ async function asyncForEach(array, callback) {
 
 let json2csvCallback = function (err, csv) {
   if (err) throw err;
-  console.log(csv);
-  writeFileSync('output.csv', csv);
+  writeFileSync('output2.csv', csv);
 };
  
